@@ -229,6 +229,19 @@ int mosquitto_main_loop(struct mosquitto__listener_sock *listensock, int listens
 			flag_db_backup = false;
 		}
 #endif
+/* LCOV_EXCL_START */
+#ifdef __GNUC__
+		extern void __gcov_dump(void);
+		extern void __gcov_reset(void);
+		extern bool flag_gcov_dump;
+		if(flag_gcov_dump){
+			__gcov_dump();
+			__gcov_reset();
+			flag_gcov_dump = false;
+			log__printf(NULL, MOSQ_LOG_INFO, "Coverage data dumped to disk.");
+		}
+#endif
+/* LCOV_EXCL_STOP */
 		if(flag_reload){
 			log__printf(NULL, MOSQ_LOG_INFO, "Reloading config.");
 			config__read(db.config, true);

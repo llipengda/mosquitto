@@ -36,6 +36,9 @@ extern bool flag_db_backup;
 #endif
 extern bool flag_reload;
 extern bool flag_tree_print;
+/* LCOV_EXCL_START */
+extern bool flag_gcov_dump;
+/* LCOV_EXCL_STOP */
 extern int run;
 
 #ifdef SIGHUP
@@ -56,7 +59,7 @@ void handle_sigint(int signal)
 	run = 0;
 }
 
-/* Signal handler for SIGUSR1 - backup the db. */
+/* Signal handler for SIGUSR1 - backup the db and dump coverage data. */
 void handle_sigusr1(int signal)
 {
 	UNUSED(signal);
@@ -64,6 +67,9 @@ void handle_sigusr1(int signal)
 #ifdef WITH_PERSISTENCE
 	flag_db_backup = true;
 #endif
+/* LCOV_EXCL_START */
+	flag_gcov_dump = true;
+/* LCOV_EXCL_STOP */
 }
 
 /* Signal handler for SIGUSR2 - print subscription / retained tree. */
