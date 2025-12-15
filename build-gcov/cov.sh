@@ -1,7 +1,8 @@
 #!/bin/bash
 
 PID_FILE="/tmp/mosquitto_coverage.pid"
-INTERVAL=${1:-60}
+NAME=${1:-coverage}
+INTERVAL=${2:-60}
 
 cleanup() {
     echo "Caught signal, performing cleanup..."
@@ -27,10 +28,9 @@ make mosquitto -j16
 
 timestamp=$(date "+%Y-%m-%d_%H:%M:%S")
 mkdir -p csv_data
-csv_file="csv_data/coverage_${timestamp}.csv"
+csv_file="csv_data/${NAME}_${timestamp}.csv"
 [ ! -f "$csv_file" ] && echo "timestamp,lines_hit,lines_total,functions_hit,functions_total,branches_hit,branches_total" > "$csv_file"
 
-kill $(cat "$PID_FILE") 2>/dev/null || true
 rm -f "$PID_FILE"
 
 src/mosquitto -c ./mosquitto.conf > /dev/null 2>&1 &
