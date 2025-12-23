@@ -1,0 +1,2 @@
+listener $PORT
+allow_anonymous true

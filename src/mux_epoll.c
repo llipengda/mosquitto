@@ -64,6 +64,8 @@ Contributors:
 #  error "epoll not supported on WIN32"
 #endif
 
+#include "fuzz_status.h"
+
 static void loop_handle_reads_writes(struct mosquitto *context, uint32_t events);
 
 static sigset_t my_sigblock;
@@ -292,6 +294,9 @@ static void loop_handle_reads_writes(struct mosquitto *context, uint32_t events)
 
 		do{
 			rc = packet__read(context);
+			/* LCOV_EXCL_START */
+			fuzz_collect_rc(rc);
+			/* LCOV_EXCL_STOP */
 			if(rc){
 				do_disconnect(context, rc);
 				return;

@@ -68,6 +68,7 @@ bool flag_db_backup = false;
 bool flag_tree_print = false;
 /* LCOV_EXCL_START */
 bool flag_gcov_dump = false;
+#include "fuzz_status.h"
 /* LCOV_EXCL_STOP */
 int run;
 #ifdef WITH_WRAP
@@ -591,10 +592,18 @@ int main(int argc, char *argv[])
 	sd_notify(0, "READY=1");
 #endif
 
+	/* LCOV_EXCL_START */
+	fuzz_status_init();
+	/* LCOV_EXCL_STOP */
+
 	run = 1;
 	rc = mosquitto_main_loop(listensock, listensock_count);
 
 	log__printf(NULL, MOSQ_LOG_INFO, "mosquitto version %s terminating", VERSION);
+
+	/* LCOV_EXCL_START */
+	fuzz_status_cleanup();
+	/* LCOV_EXCL_STOP */
 
 	/* FIXME - this isn't quite right, all wills with will delay zero should be
 	 * sent now, but those with positive will delay should be persisted and

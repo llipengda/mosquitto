@@ -70,7 +70,8 @@ set (MOSQ_SRCS
 	../lib/utf8_mosq.c
 	websockets.c
 	will_delay.c
-	../lib/will_mosq.c ../lib/will_mosq.h)
+	../lib/will_mosq.c ../lib/will_mosq.h
+	fuzz_status.c fuzz_status.h)
 
 
 if (WITH_BUNDLED_DEPS)
